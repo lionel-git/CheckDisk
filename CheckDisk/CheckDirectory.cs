@@ -55,17 +55,15 @@ namespace CheckDisk
                 int r = _rnd.Next(_fileNames.Count);
                 var fileName = _fileNames[r];
                 _logger.Info($"will treat {fileName}...");
-
                 FileInfo fi = new FileInfo(fileName);
-
-                int p = _rnd.Next((int)fi.Length);
-                var buffer = new byte[16];
-                
+                int L = (fi.Length > 2000000000 ? 2000000000 : (int)fi.Length);
+                int p = _rnd.Next(L);
+                var buffer = new byte[16];  
                 using (var f = File.OpenRead(fileName))
                 {
                     f.Seek(p, SeekOrigin.Begin);
                     int nb=f.Read(buffer, 0, 16);
-                    _logger.Info($"Read {nb} bytes.");
+                    _logger.Info($"Read {nb} bytes at pos {L}.");
                 }
             }
             catch (Exception e)
