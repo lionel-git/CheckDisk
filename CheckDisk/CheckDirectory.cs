@@ -18,6 +18,8 @@ namespace CheckDisk
 
         public int Count { get { return _fileNames.Count; } }
 
+        const int MaxRandom = 2_000_000_000;
+
         public CheckDirectory()
         {
             _fileNames = new List<string>();
@@ -50,13 +52,14 @@ namespace CheckDisk
 
         public void ReadFile()
         {
+           
             try
             {
                 int r = _rnd.Next(_fileNames.Count);
                 var fileName = _fileNames[r];
                 _logger.Info($"will treat {fileName}...");
                 FileInfo fi = new FileInfo(fileName);
-                int L = (fi.Length > 2000000000 ? 2000000000 : (int)fi.Length);
+                int L = (fi.Length > MaxRandom ? MaxRandom : (int)fi.Length);
                 int p = _rnd.Next(L);
                 var buffer = new byte[16];  
                 using (var f = File.OpenRead(fileName))
@@ -68,7 +71,7 @@ namespace CheckDisk
             }
             catch (Exception e)
             {
-                _logger.Info(e);
+                _logger.Error(e);
             }
         }
     }
