@@ -22,7 +22,7 @@ namespace ServiceUtils
                 r.OnStop();
             }
             else
-                System.ServiceProcess.ServiceBase.Run(new IService<T>(serviceName));
+                System.ServiceProcess.ServiceBase.Run(new Service<T>(serviceName));
         }
     }
 }

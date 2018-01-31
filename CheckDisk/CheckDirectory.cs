@@ -52,7 +52,6 @@ namespace CheckDisk
 
         public void ReadFile()
         {
-           
             try
             {
                 int r = _rnd.Next(_fileNames.Count);
