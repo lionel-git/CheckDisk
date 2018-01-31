@@ -30,6 +30,7 @@ namespace CheckDisk
 
         public void OnStart(string[] args)
         {
+            _logger.Info("=====================================================");
             var directories = ConfigurationManager.AppSettings["Directories"].ToString().Split(',').ToList();
             directories.AddRange(args);
 
