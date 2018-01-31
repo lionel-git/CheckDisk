@@ -17,6 +17,7 @@ namespace CheckDisk
         private CheckDirectory _checkDirectory;
         private int _delay;
         volatile bool _running = true;
+        private List<string> _directories;
 
         private void MainLoop()
         {
@@ -28,15 +29,22 @@ namespace CheckDisk
             _logger.Info("Exiting main loop");
         }
 
+        private void InitConfig(string[] args)
+        {
+            _delay = 1000 * int.Parse(ConfigurationManager.AppSettings["PollDelay"]);
+            _directories = ConfigurationManager.AppSettings["Directories"].ToString().Split(',').ToList();
+            _directories.AddRange(args);
+            _logger.Info($"Nb directories: {_directories.Count}");
+            _logger.Info($"Delay: {_delay} ms");
+        }
+
         public void OnStart(string[] args)
         {
             _logger.Info("=====================================================");
-            var directories = ConfigurationManager.AppSettings["Directories"].ToString().Split(',').ToList();
-            directories.AddRange(args);
+            InitConfig(args);
 
-            _delay = 10 * 1000;
             _checkDirectory = new CheckDirectory();
-            foreach (var d in directories)
+            foreach (var d in _directories)
             {
                 _logger.Info($"Processing dir {d}");
                 try
