@@ -19,6 +19,8 @@ namespace CheckDisk
         volatile bool _running = true;
         private List<string> _directories;
 
+        public bool ConsoleMode { get; set; }
+
         private void MainLoop()
         {
             while (_running)
