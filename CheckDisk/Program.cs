@@ -14,7 +14,7 @@ namespace CheckDisk
     {
         static void Main(string[] args)
         {
-            Starter<CheckDisk>.Start("CheckDisk", args);
+            Starter<CheckDisk>.Start("CheckDisk", args, true);
         }
     }
 }
