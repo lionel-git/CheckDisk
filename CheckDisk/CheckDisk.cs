@@ -16,7 +16,7 @@ namespace CheckDisk
         private Task _task;
         private CheckDirectory _checkDirectory;
         private int _delay;
-        volatile bool _running = true;
+        private volatile bool _running = true;
         private List<string> _directories;
 
         public bool ConsoleMode { get; set; }
