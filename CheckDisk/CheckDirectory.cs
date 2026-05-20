@@ -1,10 +1,8 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using log4net;
 
 namespace CheckDisk
 {
@@ -46,7 +44,7 @@ namespace CheckDisk
         {
             //Console.WriteLine("Processed file '{0}'.", path);
             _fileNames.Add(path);
-            if (_fileNames.Count%100==0)
+            if (_fileNames.Count % 100 == 0)
                 _logger.Info($"{_fileNames.Count} files processed.");
         }
 
@@ -57,15 +55,18 @@ namespace CheckDisk
                 int r = _rnd.Next(_fileNames.Count);
                 var fileName = _fileNames[r];
                 _logger.Info($"will treat {fileName}...");
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
                 FileInfo fi = new FileInfo(fileName);
                 int L = (fi.Length > MaxRandom ? MaxRandom : (int)fi.Length);
                 int p = _rnd.Next(L);
-                var buffer = new byte[16];  
+                var buffer = new byte[16];
                 using (var f = File.OpenRead(fileName))
                 {
                     f.Seek(p, SeekOrigin.Begin);
-                    int nb=f.Read(buffer, 0, 16);
-                    _logger.Info($"Read {nb} bytes at pos {L}.");
+                    int nb = f.Read(buffer, 0, 16);
+                    double elapsedUs = stopWatch.ElapsedTicks * 1000_000.0 / Stopwatch.Frequency;
+                    _logger.Info($"Read {nb} bytes at pos {L}. Time taken: {elapsedUs} us.");
                 }
             }
             catch (Exception e)
