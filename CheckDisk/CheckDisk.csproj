@@ -232,6 +232,9 @@
     <None Include="scd.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="scd_test.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Hopstarter-Hard-Drive-Device-Hard-Drive-Mac.ico" />

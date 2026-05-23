@@ -14,14 +14,17 @@ namespace CheckDisk
 
         private List<string> _fileNames;
 
+        private int _threshold;
+
         public int Count { get { return _fileNames.Count; } }
 
         const int MaxRandom = 2_000_000_000;
 
-        public CheckDirectory()
+        public CheckDirectory(int threshold)
         {
             _fileNames = new List<string>();
             _rnd = new Random();
+            _threshold = threshold;
         }
 
         // Process all files in the directory passed in, recurse on any directories 
@@ -67,6 +70,13 @@ namespace CheckDisk
                     int nb = f.Read(buffer, 0, 16);
                     double elapsedUs = stopWatch.ElapsedTicks * 1000_000.0 / Stopwatch.Frequency;
                     _logger.Info($"Read {nb} bytes at pos {L}. Time taken: {elapsedUs} us.");
+
+                    if (elapsedUs > _threshold)
+                    {
+                        _logger.Warn($"Read operation took longer than expected: {elapsedUs} us.");
+                        Console.Beep();
+                        System.Media.SystemSounds.Beep.Play();
+                    }
                 }
             }
             catch (Exception e)
